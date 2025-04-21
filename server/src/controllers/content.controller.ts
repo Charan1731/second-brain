@@ -48,3 +48,27 @@ export const getUserContent: RequestHandler = async (req, res) => {
         });
     }
 }
+
+export const deleteUserContent: RequestHandler = async (req, res) => {
+    try {
+
+        const contentId = req.params.id;
+        const content = await Content.findByIdAndDelete(contentId);
+        if(!content){
+            res.status(404).json({
+                success: false,
+                message: "Content not found",
+            })
+        }
+        res.status(200).json({
+            success: true,
+            message: "Content deleted successfully",
+        });
+        
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        })
+    }
+}
