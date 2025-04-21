@@ -15,9 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const connectToDB_1 = __importDefault(require("./database/connectToDB"));
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
+const content_routes_1 = __importDefault(require("./routes/content.routes"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use('/api/v1/user', user_routes_1.default);
+app.use('/api/v1/content', content_routes_1.default);
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });

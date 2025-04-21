@@ -12,22 +12,25 @@ declare global {
     }
 }
 
-const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
+const verifyToken = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
 
         const token = req.headers['authorization']?.split(' ')[1];
         if (!token) {
-            return res.status(401).json({ message: 'Unauthorized' });
+            res.status(401).json({ message: 'Unauthorized' });
+            return;
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
         if (!decoded || typeof decoded === 'string') {
-            return res.status(401).json({ message: 'Unauthorized' });
+            res.status(401).json({ message: 'Unauthorized' });
+            return;
         }
 
         const user = await User.findById((decoded as jwt.JwtPayload).id);
         if (!user) {
-            return res.status(401).json({ message: 'Unauthorized' });
+            res.status(401).json({ message: 'Unauthorized' });
+            return;
         }
 
         req.user = user;
